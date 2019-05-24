@@ -35,7 +35,6 @@ services:
       context: ..
       dockerfile: docker/Dockerfile.test
     volumes:
-      - ..:/src
       - go_cache:/cache
       - go_mod_cache:/go/pkg/mod
       - node_cache:/src/node_modules
