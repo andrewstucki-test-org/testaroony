@@ -6,7 +6,6 @@ default: docker
 .PHONY: test
 test: docker
 	@echo "Running test container"
-	ls -la && pwd
 	docker-compose -f ./docker/docker-compose.yml run --rm test
 
 .PHONY: docker
