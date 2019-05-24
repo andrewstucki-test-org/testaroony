@@ -1,5 +1,7 @@
 def projectName = "example"
 pipeline{
+  agent none
+  
   environment {
     COMPOSE_PROJECT_NAME = "$projectName"
   }
