@@ -11,4 +11,4 @@ test: docker
 .PHONY: docker
 docker:
 	@echo "Ensuring docker containers are up-to-date"
-	docker-compose -f ./docker/docker-compose.yml build > /dev/null 2>&1
+	docker-compose -f ./docker/docker-compose.yml build
