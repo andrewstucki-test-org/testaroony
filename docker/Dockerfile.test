@@ -1,0 +1,11 @@
+FROM andrewstucki/buffalo:0.0.1
+
+ADD package.json yarn.lock ./
+
+RUN yarn install --no-progress
+
+ADD go.mod go.sum ./
+
+RUN go mod download
+
+ENTRYPOINT /bin/wait-for postgres-test:5432 -- /bin/sh -c "yarn install --no-progress && buffalo test"
