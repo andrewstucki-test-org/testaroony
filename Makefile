@@ -1,3 +1,7 @@
+REPO ?= 634084408939.dkr.ecr.us-west-1.amazonaws.com
+IMAGE ?= example
+VERSION ?= $(shell git rev-parse --short HEAD)
+
 .PHONY: dev
 dev: docker
 	@echo "Running dev container"
@@ -11,7 +15,11 @@ test: docker
 .PHONY: deploy
 deploy: docker
 	@echo "Deploying project"
-	#docker-compose -f ./docker/docker-compose.yml run --rm deploy
+	docker-compose -f ./docker/docker-compose.yml run --rm ensure-repo
+	docker build . -t $(REPO)/$(IMAGE):$(VERSION)
+	$$(aws ecr get-login --no-include-email --region us-west-1)
+	docker push $(REPO)/$(IMAGE):$(VERSION)
+	docker-compose -f ./docker/docker-compose.yml run --rm deploy
 
 .PHONY: clean
 clean:
