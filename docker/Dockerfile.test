@@ -10,4 +10,4 @@ RUN go mod download
 
 ADD . .
 
-ENTRYPOINT /bin/wait-for postgres-test:5432 -- /bin/sh -c "ls -la && pwd && buffalo test"
+ENTRYPOINT /bin/wait-for postgres-test:5432 -- /bin/sh -c buffalo test
