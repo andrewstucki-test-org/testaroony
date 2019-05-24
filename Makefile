@@ -12,3 +12,8 @@ test: docker
 docker:
 	@echo "Ensuring docker containers are up-to-date"
 	docker-compose -f ./docker/docker-compose.yml build
+
+.PHONY: clean
+clean:
+	@echo "Ensuring docker containers are cleaned up"
+	docker-compose -f ./docker/docker-compose.yml down --remove-orphans
