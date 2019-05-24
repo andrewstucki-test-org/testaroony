@@ -17,7 +17,7 @@ deploy: docker
 	@echo "Deploying project"
 	docker-compose -f ./docker/docker-compose.yml run --rm ensure-repo
 	docker build . -t $(REPO)/$(IMAGE):$(VERSION)
-	$$(aws ecr get-login --region us-west-1)
+	$$(aws ecr get-login --no-include-email --region us-west-1)
 	docker push $(REPO)/$(IMAGE):$(VERSION)
 	docker-compose -f ./docker/docker-compose.yml run --rm deploy
 
