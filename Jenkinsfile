@@ -1,22 +1,20 @@
 def projectName = "example"
 pipeline{
-  agent none
+  agent any
 
-  node {
-    environment {
-      COMPOSE_PROJECT_NAME = "$projectName"
-    }
-    stages {
-      stage("test") {
-        steps{
-          sh "make test"
-        }
+  environment {
+    COMPOSE_PROJECT_NAME = "$projectName"
+  }
+  stages {
+    stage("test") {
+      steps{
+        sh "make test"
       }
+    }
 
-      stage("deploy") {
-        steps{
-          sh "echo 'Do something!'"
-        }
+    stage("deploy") {
+      steps{
+        sh "echo 'Do something!'"
       }
     }
   }
