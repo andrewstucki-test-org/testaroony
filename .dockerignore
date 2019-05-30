@@ -4,3 +4,4 @@ bin/
 Dockerfile
 docker-compose.yml
 docker
+.terraform

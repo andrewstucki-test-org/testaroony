@@ -25,7 +25,7 @@ deploy: docker
 	@echo "Deploying project"
 	@$(DOCKER_COMPOSE_RUN) terraform "terraform init && terraform apply -auto-approve -target aws_ecr_repository.repo -var image=$(IMAGE_TAG)"
 	@docker build . -t $(IMAGE_TAG)
-	@$$(aws ecr get-login --no-include-email --region us-west-1)
+	@$$(aws ecr get-login --no-include-email --region us-east-1)
 	@docker push $(IMAGE_TAG)
 	@$(DOCKER_COMPOSE_RUN) terraform "terraform init && terraform apply -auto-approve -var image=$(IMAGE_TAG)"
 	@$(DOCKER_COMPOSE_RUN) terraform "terraform init && wait-for-ecs \`terraform output cluster\` $(IMAGE)"
