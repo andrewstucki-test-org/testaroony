@@ -1,23 +1,12 @@
 version: '3'
 
-volumes:
-  go_cache:
-  go_mod_cache:
-  node_cache:
-
 services:
-  postgres-dev:
-    image: postgres:11.2-alpine
-    environment:
-      - POSTGRES_DB=dev
-  postgres-test:
-    image: postgres:11.2-alpine
-    environment:
-      - POSTGRES_DB=test
+  # Run a development container
   dev:
     build:
       context: ..
       dockerfile: docker/Dockerfile.dev
+    entrypoint: /bin/wait-for postgres-dev:5432 -- /bin/sh -c "buffalo pop migrate && buffalo dev"
     volumes:
       - ..:/src
       - go_cache:/cache
@@ -30,10 +19,12 @@ services:
     ports:
       - "3000:3000"
       - "35729:35729"
+  # Run unit tests against postgres
   test:
     build:
       context: ..
-      dockerfile: docker/Dockerfile.test
+      dockerfile: docker/Dockerfile.dev
+    entrypoint: /bin/wait-for postgres-test:5432 -- buffalo test
     volumes:
       - go_cache:/cache
       - go_mod_cache:/go/pkg/mod
@@ -42,23 +33,32 @@ services:
       - TEST_DATABASE_URL="postgres://postgres:postgres@postgres-test:5432/test?sslmode=disable"
     depends_on:
       - postgres-test
-  ensure-repo:
+  # Terraform for deployment
+  terraform:
     build:
       context: ..
       dockerfile: docker/Dockerfile.deploy
-    entrypoint: sh -c "terraform init && terraform apply -auto-approve -target aws_ecr_repository.repo"
     environment:
       - AWS_CONTAINER_CREDENTIALS_RELATIVE_URI
       - AWS_EXECUTION_ENV
       - AWS_SECRET_ACCESS_KEY
       - AWS_ACCESS_KEY_ID
-  deploy:
-    build:
-      context: ..
-      dockerfile: docker/Dockerfile.deploy
-    entrypoint: sh -c "terraform init && terraform apply -auto-approve"
+      - AWS_REGION
+    volumes:
+      - ../../modules:/modules
+      - $HOME/.aws/credentials:/root/.aws/credentials
+      - $HOME/.aws/config:/root/.aws/config
+  postgres-dev:
+    image: postgres:11.2-alpine
     environment:
-      - AWS_CONTAINER_CREDENTIALS_RELATIVE_URI
-      - AWS_EXECUTION_ENV
-      - AWS_SECRET_ACCESS_KEY
-      - AWS_ACCESS_KEY_ID
+      - POSTGRES_DB=dev
+  postgres-test:
+    image: postgres:11.2-alpine
+    environment:
+      - POSTGRES_DB=test
+
+# Persistent volumes
+volumes:
+  go_cache:
+  go_mod_cache:
+  node_cache:

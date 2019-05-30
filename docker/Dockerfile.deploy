@@ -1,3 +1,3 @@
-FROM hashicorp/terraform:0.12.0
+FROM andrewstucki/terraform:0.0.4
 
-ADD deployment.tf .
+COPY deployment.tf terraform.tfvars* .

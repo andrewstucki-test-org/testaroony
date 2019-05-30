@@ -14,9 +14,7 @@ ADD . .
 RUN GO111MODULE=on buffalo build --static -o /bin/app -v --environment=production --skip-template-validation
 
 FROM alpine
-RUN apk add --no-cache curl
-RUN apk add --no-cache bash
-RUN apk add --no-cache ca-certificates
+RUN apk add --no-cache curl bash ca-certificates
 
 WORKDIR /bin/
 
