@@ -1,6 +1,6 @@
 IMAGE ?= example
 
-REPO ?= 634084408939.dkr.ecr.us-west-1.amazonaws.com
+REPO ?= 634084408939.dkr.ecr.us-east-1.amazonaws.com
 VERSION ?= $(shell git rev-parse --short HEAD)
 
 DOCKER_COMPOSE ?= docker-compose -f ./docker/docker-compose.yml
