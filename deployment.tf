@@ -27,6 +27,10 @@ data "terraform_remote_state" "base" {
   }
 }
 
+resource "random_string" "session" {
+  length = 32
+}
+
 resource "aws_ecr_repository" "repo" {
   name = "example"
 }
@@ -41,6 +45,9 @@ module "example" {
   secrets = [{
     name  = "DATABASE_URL"
     value = data.terraform_remote_state.base.outputs.rds
+    }, {
+    name  = "SESSION_SECRET"
+    value = random_string.session.result
   }]
   health_check = {
     path    = "/"
