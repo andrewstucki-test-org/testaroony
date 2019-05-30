@@ -18,6 +18,10 @@ provider "aws" {
   region  = "us-east-1"
 }
 
+provider "random" {
+  version = "2.1.0"
+}
+
 data "terraform_remote_state" "base" {
   backend = "s3"
   config = {
@@ -41,7 +45,7 @@ module "example" {
   name      = "example"
   subdomain = "example"
   image     = var.image
-  port      = 8081
+  port      = 3000
   secrets = [{
     name  = "DATABASE_URL"
     value = data.terraform_remote_state.base.outputs.rds
