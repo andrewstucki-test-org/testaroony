@@ -55,7 +55,7 @@ module "example" {
   }]
   health_check = {
     path    = "/"
-    matcher = "200"
+    matcher = "200-399"
   }
 
   state = data.terraform_remote_state.base.outputs
