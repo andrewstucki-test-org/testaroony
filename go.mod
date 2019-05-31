@@ -16,6 +16,7 @@ require (
 	github.com/gobuffalo/packr/v2 v2.1.0
 	github.com/gobuffalo/pop v4.11.0+incompatible
 	github.com/gobuffalo/suite v2.6.2+incompatible
+	github.com/gorilla/sessions v1.1.3
 	github.com/markbates/grift v1.0.5
 	github.com/unrolled/secure v1.0.0
 )

@@ -37,6 +37,7 @@ run on Jenkins.
 	- `docker/Dockerfile.deploy` - `buffalo` container with go module and node module
 	caching.
 8. `Dockerfile` - production container with auto-migrations.
+9. `actions/cookies.go` - A wrapper to the cookie store so we actually store secure cookies.
 
 ## Terraform
 
